@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # ---------------------------------------------------------------------
-# Copyright (C) 2024 DevPanel
+# Copyright (C) 2023 DevPanel
 # You can install any service here to support your project
 # Please make sure you run apt update before install any packages
 # Example:
@@ -8,37 +8,29 @@
 # - sudo apt-get install nano
 #
 # ----------------------------------------------------------------------
-if [ -n "$DEBUG_SCRIPT" ]; then
-    set -x
-fi
 
-# Install APT packages.
-if ! command -v npm >/dev/null 2>&1; then
-  sudo apt-get update
-  sudo apt-get install -y jq nano npm
-fi
+sudo apt-get update
+sudo apt-get install -y nano
 
-# Enable AVIF support in GD extension if not already enabled.
-if [ -z "$(php --ri gd | grep AVIF)" ]; then
-  sudo apt-get install -y libavif-dev
-  sudo docker-php-ext-configure gd --with-avif --with-freetype --with-jpeg --with-webp
-  sudo docker-php-ext-install gd
-fi
+echo '> Install node 22'
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+\. "$HOME/.nvm/nvm.sh"
+nvm install 22
+echo "> Installed Node $(node -v), NPM $(npm -v)"
+npm config set os linux
+# Install Claude
+npm install @anthropic-ai/claude-code --force --no-os-check
+sudo ln -s $(pwd)/node_modules/.bin/claude /usr/local/bin/claude
 
-PECL_UPDATED=false
-# Install APCU extension. Bypass question about enabling internal debugging.
-if ! php --ri apcu > /dev/null 2>&1; then
-  $PECL_UPDATED || sudo pecl update-channels && PECL_UPDATED=true
-  sudo pecl install apcu <<< ''
-  echo 'extension=apcu.so' | sudo tee /usr/local/etc/php/conf.d/apcu.ini
-fi
-# Install uploadprogress extension.
-if ! php --ri uploadprogress > /dev/null 2>&1; then
-  $PECL_UPDATED || sudo pecl update-channels && PECL_UPDATED=true
-  sudo pecl install uploadprogress
-  echo 'extension=uploadprogress.so' | sudo tee /usr/local/etc/php/conf.d/uploadprogress.ini
-fi
-# Reload Apache if it's running.
-if $PECL_UPDATED && sudo /etc/init.d/apache2 status > /dev/null; then
-  sudo /etc/init.d/apache2 reload
+# Install Google Gemini
+npm install @google/gemini-cli --force --no-os-check
+sudo ln -s $(pwd)/node_modules/.bin/gemini /usr/local/bin/gemini
+
+# Install VSCode Extensions
+if [[ -n "$DP_VSCODE_EXTENSIONS" ]]; then
+    sudo chown -R www:www $APP_ROOT/.vscode/extensions/
+    IFS=','
+    for value in $DP_VSCODE_EXTENSIONS; do
+        code-server --install-extension $value --user-data-dir=$APP_ROOT/.vscode
+    done
 fi

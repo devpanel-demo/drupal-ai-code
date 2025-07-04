@@ -28,7 +28,6 @@ if [ ! -d "$STATIC_FILES_PATH" ]; then
   mkdir -p $STATIC_FILES_PATH
 fi
 
-
 #== Composer install.
 if [[ -f "$APP_ROOT/composer.json" ]]; then
   cd $APP_ROOT && composer install
@@ -39,7 +38,6 @@ echo 'Generate hash salt ...'
 DRUPAL_HASH_SALT=$(openssl rand -hex 32);
 echo $DRUPAL_HASH_SALT > $APP_ROOT/.devpanel/salt.txt
 
-
 # Securing file permissions and ownership
 # https://www.drupal.org/docs/security-in-drupal/securing-file-permissions-and-ownership
 [[ ! -d $STATIC_FILES_PATH ]] && sudo mkdir --mode 775 $STATIC_FILES_PATH || sudo chmod 775 -R $STATIC_FILES_PATH
@@ -47,7 +45,7 @@ echo $DRUPAL_HASH_SALT > $APP_ROOT/.devpanel/salt.txt
 #== Extract static files
 if [[ $(mysql -h$DB_HOST -P$DB_PORT -u$DB_USER -p$DB_PASSWORD $DB_NAME -e "show tables;") == '' ]]; then
   if [[ -f "$APP_ROOT/.devpanel/dumps/files.tgz" ]]; then
-    echo  'Extract static files ...'
+    echo 'Extract static files ...'
     sudo mkdir -p $STATIC_FILES_PATH
     sudo tar xzf "$APP_ROOT/.devpanel/dumps/files.tgz" -C $STATIC_FILES_PATH
     sudo rm -rf $APP_ROOT/.devpanel/dumps/files.tgz
@@ -55,7 +53,7 @@ if [[ $(mysql -h$DB_HOST -P$DB_PORT -u$DB_USER -p$DB_PASSWORD $DB_NAME -e "show 
 
   #== Import mysql files
   if [[ -f "$APP_ROOT/.devpanel/dumps/db.sql.gz" ]]; then
-    echo  'Import mysql file ...'
+    echo 'Import mysql file ...'
     drush sqlq --file="$APP_ROOT/.devpanel/dumps/db.sql.gz" --file-delete
   fi
 fi
