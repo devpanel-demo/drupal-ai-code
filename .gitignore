@@ -1,15 +1,55 @@
-/.devpanel/dumps/
 /.devpanel/salt.txt
-/.editorconfig
-/.gitattributes
-/.vscode/
-/composer.json
-/composer.lock
+# Ignore Drupal core files managed by Composer
+/web/core/
+!/web/core/assets/ # Optional, if you want to keep some static files
+
+# Ignore contrib modules/themes/libraries managed by Composer
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+
+# Ignore default files directory (user-uploaded files)
+web/sites/*/files/
+!web/sites/default/files/.gitkeep
+
+# Ignore private files (if you use a private file path)
+private/
+sites/private/
+
+# Ignore configuration sync directory if it's outside the docroot (optional)
 /config/
-/logs/*
-/patches.lock.json
-/private/
-/README.md
-/recipes/
+
+# Ignore sensitive settings
+/web/sites/default/settings.php
+/web/sites/default/settings.local.php
+/web/sites/default/services.yml
+/web/sites/default/files/
+/web/sites/default/files/*
+
+# Ignore environment files
+.env
+.env.local
+
+# Ignore Composer-generated files
 /vendor/
-/web/
+/composer.lock
+
+# Node.js and front-end build files (if using them)
+node_modules/
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+dist/
+build/
+
+# IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
