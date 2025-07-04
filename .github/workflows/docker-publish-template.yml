@@ -12,7 +12,7 @@ jobs:
       webserver:
         image: devpanel/php:8.3-base
         env:
-          DP_APP_ID: 'localgov-drupal'
+          DP_APP_ID: 'drupal-ai-code'
           APP_ROOT: '/var/www/html'        
           WEB_ROOT: '/var/www/html/web'
           CODES_USER_DATA_DIR: '/var/www/html/.vscode'
