@@ -28,7 +28,6 @@ sudo ln -s $(pwd)/node_modules/.bin/claude /usr/local/bin/claude
 npm install @google/gemini-cli --force --no-os-check
 sudo ln -s $(pwd)/node_modules/.bin/gemini /usr/local/bin/gemini
 echo GEMINI_API_KEY= >>.env
-echo GEMINI_API_KEY= >>.env
 
 # Install VSCode Extensions
 if [[ -n "$DP_VSCODE_EXTENSIONS" ]]; then
