@@ -18,6 +18,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 nvm install 22
 echo "> Installed Node $(node -v), NPM $(npm -v)"
 npm config set os linux
+sudo chown $(whoami):$(whoami) $HOME/.npm $HOME/.npmrc $HOME/.nvm
+
 # Install Claude
 npm install @anthropic-ai/claude-code --force --no-os-check
 sudo ln -s $(pwd)/node_modules/.bin/claude /usr/local/bin/claude
