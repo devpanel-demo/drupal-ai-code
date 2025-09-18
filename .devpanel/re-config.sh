@@ -34,6 +34,8 @@ if [[ -f "$APP_ROOT/composer.json" ]]; then
   export PATH="$APP_ROOT/vendor/bin:$PATH"
 fi
 
+drush status
+
 #== Generate hash salt
 echo 'Generate hash salt ...'
 DRUPAL_HASH_SALT=$(openssl rand -hex 32);
