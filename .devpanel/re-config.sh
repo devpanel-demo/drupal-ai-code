@@ -31,6 +31,7 @@ fi
 #== Composer install.
 if [[ -f "$APP_ROOT/composer.json" ]]; then
   cd $APP_ROOT && composer install
+  export PATH="$APP_ROOT/vendor/bin:$PATH"
 fi
 
 #== Generate hash salt
